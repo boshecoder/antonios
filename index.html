@@ -103,7 +103,7 @@
     <button id="startButton">Начать</button>
 
     <div id="content">
-            <img id="flashingImage" src="text.png" alt="Мерцающий текст">
+                <img id="flashingImage" src="text.png" alt="Мерцающий текст">
     </div>
 
     <div id="preload">
@@ -168,16 +168,11 @@
 
             document.body.classList.add('loaded');
             contentDiv.classList.add('visible');
-                startButton.style.display = 'none';
+            startButton.style.display = 'none';
             warningDiv.style.display = 'none';
 
             clearInterval(intervalId);
             flashingImage.classList.add('hidden');
-
-             // Запускаем мерцание только после загрузки страницы, чтобы убедиться, что flashingImage существует
-            window.onload = function() {
-              intervalId = setInterval(toggleVisibility, 100);
-            };
 
             setTimeout(function() {
                 fullVersionDiv.classList.add('visible');
@@ -205,5 +200,18 @@
         });
 
         hzButton.addEventListener('click', function() {
-          audioElements.forEach(audio => {
-              audio.pause();
+            audioElements.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            audio11.play().catch(error => {
+                console.error("Ошибка при воспроизведении audio11:", error);
+                alert("Воспроизведение 144 Hz заблокировано браузером. Разрешите воспроизведение звука.");
+            });
+        });
+
+
+    </script>
+
+</body>
+</html>
