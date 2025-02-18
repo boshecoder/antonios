@@ -103,7 +103,7 @@
     <button id="startButton">Начать</button>
 
     <div id="content">
-                <img id="flashingImage" src="text.png" alt="Мерцающий текст">
+        <img id="flashingImage" src="text.png" alt="Мерцающий текст">
     </div>
 
     <div id="preload">
@@ -143,7 +143,7 @@
             audio9
         ];
 
-        const flashingImage = document.getElementById('flashingImage');
+        let flashingImage; // Объявляем переменную здесь
         const contentDiv = document.getElementById('content');
         const startButton = document.getElementById('startButton');
         const warningDiv = document.getElementById('warning');
@@ -171,18 +171,17 @@
             startButton.style.display = 'none';
             warningDiv.style.display = 'none';
 
-            clearInterval(intervalId);
-            flashingImage.classList.add('hidden');
+            flashingImage = document.getElementById('flashingImage'); // Получаем элемент после того, как он стал видим
+            intervalId = setInterval(toggleVisibility, 100); // Запускаем мерцание
 
             setTimeout(function() {
+                clearInterval(intervalId); // Останавливаем мерцание
+                flashingImage.remove(); // Удаляем элемент после остановки мерцания
                 fullVersionDiv.classList.add('visible');
             }, 35000);
         });
 
-        // Запускаем мерцание только после загрузки страницы, чтобы убедиться, что flashingImage существует
-        window.onload = function() {
-            intervalId = setInterval(toggleVisibility, 100);
-        };
+        // Запускаем мерцание не нужен при загрузке страницы
 
         listenButton.addEventListener('click', function() {
             audioElements.forEach(audio => {
