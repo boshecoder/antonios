@@ -44,6 +44,7 @@
             border-radius: 5px;
             transition: background-color 0.3s ease;
             z-index: 10;
+            margin-bottom: 5px;
         }
 
         button:hover {
@@ -89,9 +90,6 @@
             display: flex;
         }
 
-        #listenButton {
-          margin-top: 10px;
-        }
 
     </style>
 </head>
@@ -103,8 +101,9 @@
     </div>
 
     <button id="startButton">Начать</button>
-        <div id="content">
-        <img id="flashingImage" src="text.png" alt="Мерцающий текст">
+
+    <div id="content">
+            <img id="flashingImage" src="text.png" alt="Мерцающий текст">
     </div>
 
     <div id="preload">
@@ -114,6 +113,8 @@
     <div id="fullVersion">
         <p>Слушай полную версию</p>
         <button id="listenButton">Слушать</button>
+        <button id="downloadButton">Скачать</button>
+        <button id="hzButton">144 Hz</button>
     </div>
 
 
@@ -128,6 +129,7 @@
         const audio8 = new Audio("audio8.mp3");
         const audio9 = new Audio("audio9.mp3");
         const audio10 = new Audio("audio10.mp3");
+        const audio11 = new Audio("audio11.mp3");
 
         const audioElements = [
             audio1,
@@ -147,12 +149,14 @@
         const warningDiv = document.getElementById('warning');
         const fullVersionDiv = document.getElementById('fullVersion');
         const listenButton = document.getElementById('listenButton');
+        const downloadButton = document.getElementById('downloadButton');
+        const hzButton = document.getElementById('hzButton');
 
         function toggleVisibility() {
             flashingImage.classList.toggle('hidden');
         }
 
-        setInterval(toggleVisibility, 100);
+        let intervalId;
 
         startButton.addEventListener('click', function() {
             audioElements.forEach(audio => {
@@ -164,25 +168,42 @@
 
             document.body.classList.add('loaded');
             contentDiv.classList.add('visible');
-            startButton.style.display = 'none';
+                startButton.style.display = 'none';
             warningDiv.style.display = 'none';
+
+            clearInterval(intervalId);
+            flashingImage.classList.add('hidden');
+
+             // Запускаем мерцание только после загрузки страницы, чтобы убедиться, что flashingImage существует
+            window.onload = function() {
+              intervalId = setInterval(toggleVisibility, 100);
+            };
 
             setTimeout(function() {
                 fullVersionDiv.classList.add('visible');
-            }, 35000); // 35 секунд
+            }, 35000);
         });
+
+        // Запускаем мерцание только после загрузки страницы, чтобы убедиться, что flashingImage существует
+        window.onload = function() {
+            intervalId = setInterval(toggleVisibility, 100);
+        };
 
         listenButton.addEventListener('click', function() {
-          audioElements.forEach(audio => {
-              audio.pause();
-              audio.currentTime = 0;
-          });
+            audioElements.forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
             audio10.play().catch(error => {
-              console.error("Ошибка при воспроизведении audio10:", error);
-              alert("Воспроизведение полной версии заблокировано браузером. Разрешите воспроизведение звука.");
+                console.error("Ошибка при воспроизведении audio10:", error);
+                alert("Воспроизведение полной версии заблокировано браузером. Разрешите воспроизведение звука.");
             });
         });
-    </script>
 
-</body>
-</html>
+        downloadButton.addEventListener('click', function() {
+            window.location.href = "audio10.mp3";
+        });
+
+        hzButton.addEventListener('click', function() {
+          audioElements.forEach(audio => {
+              audio.pause();
