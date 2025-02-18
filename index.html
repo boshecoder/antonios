@@ -77,6 +77,22 @@
             overflow: hidden;
             z-index: -1;
         }
+
+        #fullVersion {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #fullVersion.visible {
+            display: flex;
+        }
+
+        #listenButton {
+          margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -87,13 +103,17 @@
     </div>
 
     <button id="startButton">Начать</button>
-
-    <div id="content">
+        <div id="content">
         <img id="flashingImage" src="text.png" alt="Мерцающий текст">
     </div>
 
     <div id="preload">
         <img src="bg.jpg" alt="Предзагрузка фона">
+    </div>
+
+    <div id="fullVersion">
+        <p>Слушай полную версию</p>
+        <button id="listenButton">Слушать</button>
     </div>
 
 
@@ -107,6 +127,7 @@
         const audio7 = new Audio("audio7.mp3");
         const audio8 = new Audio("audio8.mp3");
         const audio9 = new Audio("audio9.mp3");
+        const audio10 = new Audio("audio10.mp3");
 
         const audioElements = [
             audio1,
@@ -124,6 +145,8 @@
         const contentDiv = document.getElementById('content');
         const startButton = document.getElementById('startButton');
         const warningDiv = document.getElementById('warning');
+        const fullVersionDiv = document.getElementById('fullVersion');
+        const listenButton = document.getElementById('listenButton');
 
         function toggleVisibility() {
             flashingImage.classList.toggle('hidden');
@@ -143,6 +166,21 @@
             contentDiv.classList.add('visible');
             startButton.style.display = 'none';
             warningDiv.style.display = 'none';
+
+            setTimeout(function() {
+                fullVersionDiv.classList.add('visible');
+            }, 35000); // 35 секунд
+        });
+
+        listenButton.addEventListener('click', function() {
+          audioElements.forEach(audio => {
+              audio.pause();
+              audio.currentTime = 0;
+          });
+            audio10.play().catch(error => {
+              console.error("Ошибка при воспроизведении audio10:", error);
+              alert("Воспроизведение полной версии заблокировано браузером. Разрешите воспроизведение звука.");
+            });
         });
     </script>
 
