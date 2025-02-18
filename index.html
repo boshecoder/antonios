@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Музыкальная страница</title>
-    <link rel="stylesheet" href="style.css">
     <style>
         body {
             background-color: black;
@@ -17,7 +16,7 @@
             height: 100vh;
             margin: 0;
             text-align: center;
-            transition: background-image 0.5s ease; /* Плавный переход фона */
+            transition: background-image 0.5s ease;
         }
 
         body.loaded {
@@ -27,12 +26,12 @@
         }
 
         #content {
-            display: none; /* Скрываем контент по умолчанию */
-            position: relative; /*  Для позиционирования FlashingImage */
+            display: none;
+            position: relative;
         }
 
         #content.visible {
-            display: block; /* Показываем контент после нажатия кнопки */
+            display: block;
         }
 
         button {
@@ -44,7 +43,7 @@
             cursor: pointer;
             border-radius: 5px;
             transition: background-color 0.3s ease;
-            z-index: 10; /* Чтобы кнопка была поверх всего */
+            z-index: 10;
         }
 
         button:hover {
@@ -68,7 +67,15 @@
         }
 
         #warning {
-            margin-bottom: 20px; /* Отступ между предупреждением и кнопкой */
+            margin-bottom: 20px;
+        }
+
+        #preload {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            z-index: -1;
         }
     </style>
 </head>
@@ -83,6 +90,10 @@
 
     <div id="content">
         <img id="flashingImage" src="text.png" alt="Мерцающий текст">
+    </div>
+
+    <div id="preload">
+        <img src="bg.jpg" alt="Предзагрузка фона">
     </div>
 
 
@@ -121,7 +132,6 @@
         setInterval(toggleVisibility, 100);
 
         startButton.addEventListener('click', function() {
-            // Запускаем музыку
             audioElements.forEach(audio => {
                 audio.play().catch(error => {
                     console.error("Ошибка при воспроизведении аудио:", error);
@@ -129,16 +139,9 @@
                 });
             });
 
-            // Меняем фон
             document.body.classList.add('loaded');
-
-            // Показываем контент (картинку)
             contentDiv.classList.add('visible');
-
-            // Скрываем кнопку
             startButton.style.display = 'none';
-
-            // Скрываем предупреждение
             warningDiv.style.display = 'none';
         });
     </script>
